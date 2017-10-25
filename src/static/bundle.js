@@ -22756,11 +22756,12 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     super();
     this.onCompanyChanged = this.onCompanyChanged.bind(this);
     this.getStockValue = this.getStockValue.bind(this);
-    this.onStockOver = this.onStockOver.bind(this);
-    this.onStockOut = this.onStockOut.bind(this);
+    this.onResetClick = this.onResetClick.bind(this);
 
     this.state = {
+      selecting: false,
       companies: [],
+      currentlySelected: -1,
       stockValues: []
     };
   }
@@ -22786,12 +22787,69 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     this.getStockValue(e.target.value);
   }
 
-  onStockOver(e) {
-    e.target.setAttribute('fill-opacity', 0.12);
+  onStockOver(i) {
+    const stocks = [...this.state.stockValues];
+    const stock = stocks[i];
+    const status = stock.status;
+
+    if (!status || status !== 'selected') {
+      stock.status = 'hover';
+      this.setState({
+        stockValues: stocks
+      });
+    }
   }
 
-  onStockOut(e) {
-    e.target.setAttribute('fill-opacity', 0.01);
+  onStockOut(i) {
+    const stocks = [...this.state.stockValues];
+    const stock = stocks[i];
+    const status = stock.status;
+
+    if (!status || status !== 'selected') {
+      stock.status = undefined;
+      this.setState({
+        stockValues: stocks
+      });
+    }
+  }
+
+  onStockClick(i) {
+    const stocks = [...this.state.stockValues];
+    stocks[i].status = 'selected';
+
+    if (this.state.currentlySelected === i) {
+      stocks[i].status = 'hover';
+      this.setState({
+        stockValues: stocks,
+        currentlySelected: -1
+      });
+    } else if (this.state.currentlySelected !== i) {
+      if (this.state.currentlySelected === -1) {
+        this.setState({
+          stockValues: stocks,
+          currentlySelected: i
+        });
+      } else {
+        this.zoomIn(i);
+      }
+    }
+  }
+
+  zoomIn(i) {
+    let start = Math.min(this.state.currentlySelected, i);
+    let end = Math.max(this.state.currentlySelected, i);
+
+    const newStocks = this.state.stockValues.slice(start, end + 1);
+    newStocks.forEach(stock => {
+      stock.status = undefined;
+    });
+
+    const stocks = [...newStocks];
+
+    this.setState({
+      stockValues: stocks,
+      currentlySelected: -1
+    });
   }
 
   getStockValue(id) {
@@ -22804,6 +22862,10 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }).catch(function (error) {
       console.log(error);
     });
+  }
+
+  onResetClick() {
+    this.getStockValue(this.state.selectedCompany);
   }
 
   render() {
@@ -22850,12 +22912,23 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
       const candle = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('rect', { x: x, y: y, height: height, width: width, fill: color,
         strokeWidth: '0', key: this.state.selectedCompany + i.toString() });
 
-      const line = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('line', { x1: a1, y1: b1, x2: a2, y2: b2, stroke: 'black', strokeWidth: '0.5',
-        key: 'line' + this.state.selectedCompany + i.toString() });
+      let opacity = 0.01;
 
-      const overlay = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('rect', { x: x, y: marginTop, height: chartHeight, width: columnWidth, fill: 'gray', fillOpacity: '0.01',
-        onMouseOver: this.onStockOver,
-        onMouseOut: this.onStockOut });
+      if (sv.status === 'selected') {
+        opacity = 0.3;
+      } else if (sv.status === 'hover') {
+        opacity = 0.12;
+      }
+
+      const line = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('line', { x1: a1, y1: b1, x2: a2, y2: b2, stroke: 'black', strokeWidth: '0.5',
+        key: 'line-' + this.state.selectedCompany + i.toString() });
+
+      const overlay = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('rect', { x: x, y: marginTop, height: chartHeight, width: columnWidth,
+        fill: 'gray', fillOpacity: opacity,
+        key: 'overlay-' + this.state.selectedCompany + i.toString(),
+        onMouseOver: this.onStockOver.bind(this, i),
+        onMouseOut: this.onStockOut.bind(this, i),
+        onClick: this.onStockClick.bind(this, i) });
 
       svgItems.push(candle);
       svgItems.push(line);
@@ -22886,11 +22959,21 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'p',
           null,
-          'Company: ',
+          'Hover over a candle to see details. Select two candles to zoom in to a time span, click Reset to reset the zoom level.'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'p',
+          null,
+          'Company:',
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'select',
             { value: this.state.selectedCompany, onChange: this.onCompanyChanged },
             companies
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'button',
+            { onClick: this.onResetClick },
+            'Reset'
           )
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(

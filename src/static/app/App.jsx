@@ -6,11 +6,12 @@ export default class App extends Component {
     super()
     this.onCompanyChanged = this.onCompanyChanged.bind(this)
     this.getStockValue = this.getStockValue.bind(this)
-    this.onStockOver = this.onStockOver.bind(this)
-    this.onStockOut = this.onStockOut.bind(this)
+    this.onResetClick = this.onResetClick.bind(this)
 
     this.state = {
+      selecting: false,
       companies: [],
+      currentlySelected: -1,
       stockValues: []
     }
   }
@@ -38,12 +39,69 @@ export default class App extends Component {
     this.getStockValue(e.target.value)
   }
 
-  onStockOver(e) {
-    e.target.setAttribute('fill-opacity', 0.12)
+  onStockOver(i) {
+    const stocks = [...this.state.stockValues]
+    const stock = stocks[i]
+    const status = stock.status
+
+    if (!status || status !== 'selected') {
+      stock.status = 'hover'
+      this.setState({
+        stockValues: stocks
+      })
+    }
   }
 
-  onStockOut(e) {
-    e.target.setAttribute('fill-opacity', 0.01)
+  onStockOut(i) {
+    const stocks = [...this.state.stockValues]
+    const stock = stocks[i]
+    const status = stock.status
+
+    if (!status || status !== 'selected') {
+      stock.status = undefined
+      this.setState({
+        stockValues: stocks
+      })
+    }
+  }
+
+  onStockClick(i) {
+    const stocks = [...this.state.stockValues]
+    stocks[i].status = 'selected'
+
+    if (this.state.currentlySelected === i) {
+      stocks[i].status = 'hover'
+      this.setState({
+        stockValues: stocks,
+        currentlySelected: -1
+      })
+    } else if (this.state.currentlySelected !== i) {
+      if (this.state.currentlySelected === -1) {
+        this.setState({
+          stockValues: stocks,
+          currentlySelected: i
+        })
+      } else {
+        this.zoomIn(i)
+      }
+    }
+  }
+
+  zoomIn(i) {
+    let start = Math.min(this.state.currentlySelected, i)
+    let end = Math.max(this.state.currentlySelected, i)
+
+    const newStocks = this.state.stockValues.slice(start, end + 1)
+    newStocks.forEach((stock) => {
+      stock.status = undefined
+    })
+
+    const stocks = [...newStocks]
+
+    this.setState({
+      stockValues: stocks,
+      currentlySelected: -1
+    })
   }
 
   getStockValue(id) {
@@ -58,6 +116,10 @@ export default class App extends Component {
       .catch(function (error) {
         console.log(error);
       })
+  }
+
+  onResetClick() {
+    this.getStockValue(this.state.selectedCompany)
   }
 
   render() {
@@ -100,12 +162,24 @@ export default class App extends Component {
       const candle = <rect x={x} y={y} height={height} width={width} fill={color}
         strokeWidth="0" key={this.state.selectedCompany + i.toString()}/>
 
-      const line = <line x1={a1} y1={b1} x2={a2} y2={b2} stroke="black" strokeWidth="0.5"
-        key={'line' + this.state.selectedCompany + i.toString()}/>
+      let opacity = 0.01
 
-      const overlay = <rect x={x} y={marginTop} height={chartHeight} width={columnWidth} fill="gray" fillOpacity="0.01"
-        onMouseOver={this.onStockOver}
-        onMouseOut={this.onStockOut}></rect>
+      if (sv.status === 'selected') {
+        opacity = 0.3
+      } else if (sv.status === 'hover') {
+        opacity = 0.12
+      }
+
+      const line = <line x1={a1} y1={b1} x2={a2} y2={b2} stroke="black" strokeWidth="0.5"
+        key={'line-' + this.state.selectedCompany + i.toString()}/>
+
+      const overlay = <rect x={x} y={marginTop} height={chartHeight} width={columnWidth}
+        fill="gray" fillOpacity={opacity}
+        key={'overlay-' + this.state.selectedCompany + i.toString()}
+        onMouseOver={this.onStockOver.bind(this, i)}
+        onMouseOut={this.onStockOut.bind(this, i)}
+        onClick={this.onStockClick.bind(this, i)}>
+      </rect>
 
       svgItems.push(candle)
       svgItems.push(line)
@@ -122,11 +196,16 @@ export default class App extends Component {
           </div>
         </div>
         <div className="content">
+          <p>Hover over a candle to see details. Select two candles to zoom in to a time span, click Reset to reset the zoom level.</p>
           <p>
-            Company: <select value={this.state.selectedCompany} onChange={this.onCompanyChanged} >
+            Company:
+            <select value={this.state.selectedCompany} onChange={this.onCompanyChanged} >
               {companies}
             </select>
+
+            <button onClick={this.onResetClick}>Reset</button>
           </p>
+
           <svg className="graph" width="960" height="300" viewBox="0 0 960 300">
 
             {svgItems}
