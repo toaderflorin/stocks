@@ -1,0 +1,106 @@
+[
+  {
+    "company": {
+      "name": "Heckler & Koch",
+      "id": "HK"
+    },
+    "stockValues": [
+      { "min": 6.97, "open": 7.33, "close": 7.48, "max": 7.55 },
+      { "min": 7.13, "open": 7.25, "close": 7.14, "max": 7.35 },
+      { "min": 7.22, "open": 7.64, "close": 7.35, "max": 7.64 },
+      { "min": 7.23, "open": 7.23, "close": 7.34, "max": 7.45 },
+      { "min": 7.13, "open": 7.31, "close": 7.45, "max": 7.54 },
+      { "min": 7.11, "open": 7.30, "close": 7.42, "max": 7.61 },
+      { "min": 7.31, "open": 7.50, "close": 7.32, "max": 7.71 },
+      { "min": 7.11, "open": 7.47, "close": 7.19, "max": 7.51 },
+      { "min": 7.11, "open": 7.43, "close": 7.21, "max": 7.51 },
+
+      { "min": 6.97, "open": 7.13, "close": 7.48, "max": 7.55 },
+      { "min": 7.13, "open": 7.25, "close": 7.14, "max": 7.35 },
+      { "min": 7.22, "open": 7.64, "close": 7.35, "max": 7.64 },
+      { "min": 7.23, "open": 7.23, "close": 7.34, "max": 7.45 },
+      { "min": 7.13, "open": 7.31, "close": 7.45, "max": 7.54 },
+      { "min": 7.11, "open": 7.30, "close": 7.42, "max": 7.61 },
+      { "min": 7.31, "open": 7.50, "close": 7.32, "max": 7.71 },
+      { "min": 7.11, "open": 7.47, "close": 7.19, "max": 7.51 },
+      { "min": 7.11, "open": 7.43, "close": 7.21, "max": 7.51 },
+
+      { "min": 6.97, "open": 7.13, "close": 7.48, "max": 7.55 },
+      { "min": 7.13, "open": 7.25, "close": 7.14, "max": 7.35 },
+      { "min": 7.22, "open": 7.64, "close": 7.35, "max": 7.64 },
+      { "min": 7.23, "open": 7.23, "close": 7.34, "max": 7.45 },
+      { "min": 7.13, "open": 7.31, "close": 7.45, "max": 7.54 },
+      { "min": 7.11, "open": 7.30, "close": 7.42, "max": 7.61 },
+      { "min": 7.31, "open": 7.50, "close": 7.32, "max": 7.71 },
+      { "min": 7.11, "open": 7.47, "close": 7.19, "max": 7.51 },
+      { "min": 7.11, "open": 7.43, "close": 7.21, "max": 7.51 },
+
+      { "min": 6.97, "open": 7.13, "close": 7.48, "max": 7.55 },
+      { "min": 7.13, "open": 7.25, "close": 7.14, "max": 7.35 },
+      { "min": 7.22, "open": 7.64, "close": 7.35, "max": 7.64 },
+      { "min": 7.23, "open": 7.23, "close": 7.34, "max": 7.45 },
+      { "min": 7.13, "open": 7.31, "close": 7.45, "max": 7.54 },
+      { "min": 7.11, "open": 7.30, "close": 7.42, "max": 7.61 },
+      { "min": 7.31, "open": 7.50, "close": 7.32, "max": 7.71 },
+      { "min": 7.11, "open": 7.47, "close": 7.19, "max": 7.51 },
+      { "min": 7.11, "open": 7.43, "close": 7.21, "max": 7.51 },
+
+      { "min": 6.97, "open": 7.13, "close": 7.48, "max": 7.55 },
+      { "min": 7.13, "open": 7.25, "close": 7.14, "max": 7.35 },
+      { "min": 7.22, "open": 7.64, "close": 7.35, "max": 7.64 },
+      { "min": 7.23, "open": 7.23, "close": 7.34, "max": 7.45 },
+      { "min": 7.13, "open": 7.31, "close": 7.45, "max": 7.54 },
+      { "min": 7.11, "open": 7.30, "close": 7.42, "max": 7.61 },
+      { "min": 7.31, "open": 7.50, "close": 7.32, "max": 7.71 },
+      { "min": 7.11, "open": 7.47, "close": 7.19, "max": 7.51 },
+      { "min": 7.11, "open": 7.43, "close": 7.21, "max": 7.51 },
+
+      { "min": 6.97, "open": 7.13, "close": 7.48, "max": 7.55 },
+      { "min": 7.13, "open": 7.25, "close": 7.14, "max": 7.35 },
+      { "min": 7.22, "open": 7.64, "close": 7.35, "max": 7.64 },
+      { "min": 7.23, "open": 7.23, "close": 7.34, "max": 7.45 },
+      { "min": 7.13, "open": 7.31, "close": 7.45, "max": 7.54 },
+      { "min": 7.11, "open": 7.30, "close": 7.42, "max": 7.61 },
+      { "min": 7.31, "open": 7.50, "close": 7.32, "max": 7.71 },
+      { "min": 7.11, "open": 7.47, "close": 7.19, "max": 7.51 },
+      { "min": 7.11, "open": 7.43, "close": 7.21, "max": 7.51 },
+
+      { "min": 6.97, "open": 7.13, "close": 7.48, "max": 7.55 },
+      { "min": 7.13, "open": 7.25, "close": 7.14, "max": 7.35 },
+      { "min": 7.22, "open": 7.64, "close": 7.35, "max": 7.64 },
+      { "min": 7.23, "open": 7.23, "close": 7.34, "max": 7.45 },
+      { "min": 7.13, "open": 7.31, "close": 7.45, "max": 7.54 },
+      { "min": 7.11, "open": 7.30, "close": 7.42, "max": 7.61 },
+      { "min": 7.31, "open": 7.50, "close": 7.32, "max": 7.71 },
+      { "min": 7.11, "open": 7.47, "close": 7.19, "max": 7.51 },
+      { "min": 7.11, "open": 7.43, "close": 7.21, "max": 7.51 },
+
+      { "min": 6.97, "open": 7.03, "close": 7.48, "max": 7.55 },
+      { "min": 7.13, "open": 7.25, "close": 7.14, "max": 7.35 },
+      { "min": 7.22, "open": 7.64, "close": 7.35, "max": 7.64 },
+      { "min": 7.23, "open": 7.23, "close": 7.34, "max": 7.45 },
+      { "min": 7.13, "open": 7.31, "close": 7.45, "max": 7.54 },
+      { "min": 7.11, "open": 7.30, "close": 7.42, "max": 7.61 },
+      { "min": 7.31, "open": 7.50, "close": 7.32, "max": 7.71 },
+      { "min": 7.11, "open": 7.47, "close": 7.19, "max": 7.51 },
+      { "min": 7.11, "open": 7.43, "close": 7.21, "max": 7.51 }
+    ]
+  },
+  {
+    "company": {
+      "name": "ACME Company",
+      "id": "ACME"
+    },
+    "stockValues": [
+      { "open": 10, "close": 20, "min": 7, "max": 33 },
+      { "open": 10, "close": 20, "min": 7, "max": 33 },
+      { "open": 10, "close": 20, "min": 7, "max": 33 },
+      { "open": 10, "close": 20, "min": 7, "max": 33 },
+      { "open": 10, "close": 20, "min": 7, "max": 33 },
+      { "open": 10, "close": 20, "min": 7, "max": 33 },
+      { "open": 10, "close": 20, "min": 7, "max": 33 },
+      { "open": 10, "close": 20, "min": 7, "max": 33 },
+      { "open": 10, "close": 20, "min": 7, "max": 33 }
+    ]
+  }
+]
