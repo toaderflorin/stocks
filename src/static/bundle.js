@@ -22756,6 +22756,8 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     super();
     this.onCompanyChanged = this.onCompanyChanged.bind(this);
     this.getStockValue = this.getStockValue.bind(this);
+    this.onStockOver = this.onStockOver.bind(this);
+    this.onStockOut = this.onStockOut.bind(this);
 
     this.state = {
       companies: [],
@@ -22784,6 +22786,14 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     this.getStockValue(e.target.value);
   }
 
+  onStockOver(e) {
+    e.target.setAttribute('fill-opacity', 0.12);
+  }
+
+  onStockOut(e) {
+    e.target.setAttribute('fill-opacity', 0.01);
+  }
+
   getStockValue(id) {
     axios.get(`/api/stocks/${id}`).then(response => {
       this.setState({
@@ -22802,8 +22812,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
       { key: c.id, value: c.id },
       c.name
     ));
-    const candles = [];
-    const lines = [];
+    const svgItems = [];
 
     const totalValues = this.state.stockValues.length;
 
@@ -22819,7 +22828,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
       const scale = chartHeight / (this.state.max - this.state.min);
 
       const bullish = sv.close > sv.open;
-      const color = bullish ? '#3f3' : 'red';
+      const color = bullish ? '#4f4' : 'red';
 
       const min = (sv.min - this.state.min) * scale;
       const max = (sv.max - this.state.min) * scale;
@@ -22843,8 +22852,15 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 
       const line = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('line', { x1: a1, y1: b1, x2: a2, y2: b2, stroke: 'black', strokeWidth: '0.5',
         key: 'line' + this.state.selectedCompany + i.toString() });
-      candles.push(candle);
-      lines.push(line);
+
+      const overlay = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('rect', { x: x, y: marginTop, height: chartHeight, width: columnWidth, fill: 'gray', fillOpacity: '0.01',
+        onMouseOver: this.onStockOver,
+        onMouseOut: this.onStockOut });
+
+      svgItems.push(candle);
+      svgItems.push(line);
+      svgItems.push(overlay);
+
       i++;
     }
 
@@ -22880,9 +22896,8 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'svg',
           { className: 'graph', width: '960', height: '300', viewBox: '0 0 960 300' },
-          candles,
-          lines,
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('line', { x1: '40', y1: '251', x2: '950', y2: '251', stroke: 'black', strokeWidth: '0.5' }),
+          svgItems,
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('line', { x1: '40', y1: '251', x2: '940', y2: '251', stroke: 'black', strokeWidth: '0.5' }),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('line', { x1: '940', y1: '251', x2: '940', y2: '258', stroke: 'black', strokeWidth: '0.5' }),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('line', { x1: '40', y1: '251', x2: '40', y2: '30', stroke: 'black', strokeWidth: '0.5' }),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('line', { x1: '33', y1: '50', x2: '40', y2: '50', stroke: 'black', strokeWidth: '0.5' }),
