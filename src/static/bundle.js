@@ -23087,7 +23087,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'p',
           null,
-          'Hover over a candle to see details. Select two candles to zoom in to a time span, click Reset to reset the zoom level.'
+          'Hover over a candle to see details. Select two candles to zoom in to a time span, click Reset to reset the zoom level. The application shows values only for weekdays (Monday to Friday), while show projection creates a prediction graph with the estimated values of the next 21 workdays.'
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'p',

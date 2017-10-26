@@ -4,6 +4,7 @@ body {
   margin: 0;
   padding: 0;
   color: #444;
+  line-height: 1.5;
 }
 
 button {
@@ -17,7 +18,7 @@ button {
 }
 
 button:disabled {
-  background: #999;  
+  background: #999;
 }
 
 input {
