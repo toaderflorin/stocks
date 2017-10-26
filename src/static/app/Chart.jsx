@@ -36,7 +36,8 @@ export default class Chart extends Component {
         this.getStockValue(response.data[0].id)
       })
       .catch(function (error) {
-        console.log(error);
+        console.log(error)
+        alert('Error occured while getting company list from server.')
       })
   }
 
@@ -189,7 +190,8 @@ export default class Chart extends Component {
         })
       })
       .catch(function (error) {
-        console.log(error);
+        console.log(error)
+        alert('Error occured while getting company stock values from server.')
       })
   }
 
