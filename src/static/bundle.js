@@ -22873,7 +22873,9 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         min,
         max,
         dateMin,
-        dateMax
+        dateMax,
+        currentlySelected: -1,
+        stockHover: undefined
       });
     }).catch(function (error) {
       console.log(error);

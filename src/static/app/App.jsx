@@ -126,7 +126,9 @@ export default class App extends Component {
           min,
           max,
           dateMin,
-          dateMax
+          dateMax,
+          currentlySelected: -1,
+          stockHover: undefined
         })
       })
       .catch(function (error) {
