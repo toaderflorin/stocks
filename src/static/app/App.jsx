@@ -46,9 +46,6 @@ export default class App extends Component {
   }
 
   onStockOver(i) {
-
-    console.log('here')
-
     const stocks = [...this.state.stockValues]
     const stock = stocks[i]
     const status = stock.status
@@ -139,7 +136,7 @@ export default class App extends Component {
       const date = new Date(lastDate)
       const value = parseFloat((lastStockValue + i * averageDelta).toFixed(2))
       const dt = new Date(date.setDate(date.getDate() + i))
-      
+
       // we are only adding weekdays
       if (dt.getDay() >= 1 && dt.getDay() <= 5) {
         stockValues.push({
