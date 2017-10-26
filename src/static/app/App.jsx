@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import Candle from './Candle'
 const axios = require('axios')
 
 export default class App extends Component {
@@ -45,6 +46,9 @@ export default class App extends Component {
   }
 
   onStockOver(i) {
+
+    console.log('here')
+
     const stocks = [...this.state.stockValues]
     const stock = stocks[i]
     const status = stock.status
@@ -135,7 +139,7 @@ export default class App extends Component {
       const date = new Date(lastDate)
       const value = parseFloat((lastStockValue + i * averageDelta).toFixed(2))
       const dt = new Date(date.setDate(date.getDate() + i))
-      console.log(dt)
+      
       // we are only adding weekdays
       if (dt.getDay() >= 1 && dt.getDay() <= 5) {
         stockValues.push({
@@ -243,46 +247,15 @@ export default class App extends Component {
       const scale = chartHeight / (this.state.max - this.state.min)
 
       if (!sv.predicted) {
-        const bullish = sv.close > sv.open
-        const color = bullish ? '#4f4' : 'red'
-
-        const a1 = marginLeft + columnWidth / 2 + i * columnWidth
-        const a2 = a1
-        const b1 = marginTop + chartHeight - (sv.min - this.state.min) * scale
-        const b2 = marginTop + chartHeight - (sv.max - this.state.min) * scale
-
-        const height =  Math.abs(sv.close - sv.open) * scale
-        const width = columnWidth - 2
-        const x = marginLeft + (1 + i * columnWidth)
-        const y1 = marginTop + chartHeight - (sv.open - this.state.min) * scale
-        const y2 = marginTop + chartHeight - (sv.close - this.state.min) * scale
-        const y = Math.min(y1, y2)
-
-        const candle = <rect x={x} y={y} height={height} width={width} fill={color}
-          strokeWidth="0" key={this.state.selectedCompany + i.toString()}/>
-
-        let opacity = 0.01
-
-        if (sv.status === 'selected') {
-          opacity = 0.3
-        } else if (sv.status === 'hover') {
-          opacity = 0.12
-        }
-
-        const line = <line x1={a1} y1={b1} x2={a2} y2={b2} stroke="black" strokeWidth="0.5"
-          key={'line-' + this.state.selectedCompany + i.toString()}/>
-
-        const overlay = <rect x={x} y={marginTop} height={chartHeight} width={columnWidth}
-          fill="gray" fillOpacity={opacity}
-          key={'overlay-' + this.state.selectedCompany + i.toString()}
-          onMouseOver={this.onStockOver.bind(this, i)}
-          onMouseOut={this.onStockOut.bind(this, i)}
-          onClick={this.onStockClick.bind(this, i)}>
-        </rect>
-
-        svgItems.push(candle)
-        svgItems.push(line)
-        svgItems.push(overlay)
+        svgItems.push(<Candle stock={sv} i={i} min={this.state.min} max={this.state.max}
+          selectedCompany={this.state.selectedCompany}
+          i={i} scale={scale}
+          columnWidth={columnWidth}
+          onStockOver={this.onStockOver.bind(this, i)}
+          onStockOut={this.onStockOut.bind(this, i)}
+          onStockClick={this.onStockClick.bind(this, i)}
+          key={'candle-' + this.state.selectedCompany + i.toString()}
+        />)
 
         if (i > 0 && this.state.showAverage) {
           const mx1 = marginLeft + columnWidth / 2 + (i - 1) * columnWidth
@@ -381,7 +354,6 @@ export default class App extends Component {
               {this.state.prediction}
             </p>
           : ''}
-
         </div>
       </div>
     )
