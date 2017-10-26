@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import Candle from './Candle'
 import Grid from './Grid'
+import Footer from './Footer'
 const axios = require('axios')
 
 export default class Chart extends Component {
@@ -283,20 +284,7 @@ export default class Chart extends Component {
           <Grid min={min} max={max} dateMin={dateMin} dateMax={dateMax}/>
         </svg>
 
-        {this.state.stockHover ? <p>
-          Date: {this.state.stockHover.dt},
-          Average: <b>{this.state.stockHover.average}</b>,
-          Open: {this.state.stockHover.open},
-          Close: {this.state.stockHover.close},
-          Min: {this.state.stockHover.min},
-          Max: {this.state.stockHover.max}
-        </p> : ""}
-
-        {this.state.prediction != '' ?
-          <p>
-            {this.state.prediction}
-          </p>
-        : ''}
+        <Footer stockHover={this.state.stockHover} prediction={this.state.prediction}/>
       </div>
     )
   }
