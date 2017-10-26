@@ -151,17 +151,8 @@ export default class Chart extends Component {
       i++;
     }
 
-    const min = Math.min(...stockValues.map((sv) => sv.min))
-    const max = Math.max(...stockValues.map((sv) => sv.max))
-    const dateMin = stockValues[0].dt
-    const dateMax = stockValues[stockValues.length - 1].dt
-
     this.setState({
       stockValues,
-      min,
-      max,
-      dateMin,
-      dateMax,
       showProjection: true
     })
   }
@@ -175,18 +166,9 @@ export default class Chart extends Component {
       stock.status = undefined
     })
 
-    const min = Math.min(...newStocks.map((sv) => sv.min))
-    const max = Math.max(...newStocks.map((sv) => sv.max))
-    const dateMin = newStocks[0].dt
-    const dateMax = newStocks[newStocks.length - 1].dt
-
     const stocks = [...newStocks]
 
     this.setState({
-      min,
-      max,
-      dateMin,
-      dateMax,
       stockValues: stocks,
       currentlySelected: -1,
       showProjection: false
@@ -196,17 +178,8 @@ export default class Chart extends Component {
   getStockValue(id) {
     axios.get(`/api/stocks/${id}`)
       .then((response) => {
-        const min = Math.min(...response.data.stockValues.map((sv) => sv.min))
-        const max = Math.max(...response.data.stockValues.map((sv) => sv.max))
-        const dateMin = response.data.stockValues[0].dt
-        const dateMax = response.data.stockValues[response.data.stockValues.length - 1].dt
-
         this.setState({
           stockValues: response.data.stockValues,
-          min,
-          max,
-          dateMin,
-          dateMax,
           currentlySelected: -1,
           stockHover: undefined,
           showProjection: false
@@ -229,22 +202,27 @@ export default class Chart extends Component {
 
   render() {
     const companies = this.state.companies.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)
+    const stockValues = this.state.stockValues
     const svgItems = []
+    const totalValues = stockValues.length
 
-    const totalValues = this.state.stockValues.length
+    const min = Math.min(...stockValues.map((sv) => sv.min))
+    const max = Math.max(...stockValues.map((sv) => sv.max))
+    const dateMin = stockValues[0] ? stockValues[0].dt : undefined
+    const dateMax = stockValues[stockValues.length - 1] ? stockValues[stockValues.length - 1].dt : undefined
 
     let i = 0
 
-    for (let sv of this.state.stockValues) {
+    for (let sv of stockValues) {
       const marginLeft = 40.0
       const marginTop = 50.0
       const chartHeight = 200.0
       const chartWidth = 900.0
       const columnWidth =  900 / totalValues
-      const scale = chartHeight / (this.state.max - this.state.min)
+      const scale = chartHeight / (max - min)
 
       if (!sv.predicted) {
-        svgItems.push(<Candle stock={sv} i={i} min={this.state.min} max={this.state.max}
+        svgItems.push(<Candle stock={sv} i={i} min={min} max={max}
           selectedCompany={this.state.selectedCompany}
           i={i} scale={scale}
           columnWidth={columnWidth}
@@ -256,9 +234,9 @@ export default class Chart extends Component {
 
         if (i > 0 && this.state.showAverage) {
           const mx1 = marginLeft + columnWidth / 2 + (i - 1) * columnWidth
-          const my1 = marginTop + chartHeight - (this.state.stockValues[i - 1].average - this.state.min) * scale
+          const my1 = marginTop + chartHeight - (this.state.stockValues[i - 1].average - min) * scale
           const mx2 = marginLeft + columnWidth / 2 + i * columnWidth
-          const my2 = marginTop + chartHeight - (sv.average - this.state.min) * scale
+          const my2 = marginTop + chartHeight - (sv.average - min) * scale
           const medianLine = <line x1={mx1} y1={my1} x2={mx2} y2={my2} stroke="black" strokeWidth="3"
             key={'average-' + this.state.selectedCompany + i.toString()}/>
 
@@ -266,7 +244,7 @@ export default class Chart extends Component {
         }
       } else {
         const x = marginLeft + columnWidth / 2 + i * columnWidth
-        const y = marginTop + chartHeight - (sv.average - this.state.min) * scale
+        const y = marginTop + chartHeight - (sv.average - min) * scale
         const circle = <circle cx={x} cy={y} r="2" stroke="gray" strokeWidth="0.5"
           key={'proj-' + this.state.selectedCompany + i.toString()}/>
 
@@ -309,19 +287,19 @@ export default class Chart extends Component {
           <line x1 ="33" y1="50" x2="40" y2="50" stroke="black" strokeWidth="0.5"/>
 
           <text x="5" y="255" fontFamily="Verdana" fontSize="11">
-            {this.state.min}
+            {min}
           </text>
 
           <text x="5" y="54" fontFamily="Verdana" fontSize="11" width="64">
-            {this.state.max}
+            {max}
           </text>
 
           <text x="38" y="275" fontFamily="Verdana" fontSize="11">
-            {this.state.dateMin}
+            {dateMin}
           </text>
 
           <text x="882" y="275" fontFamily="Verdana" fontSize="11">
-            {this.state.dateMax}
+            {dateMax}
           </text>
 
         </svg>
