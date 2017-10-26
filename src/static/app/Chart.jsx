@@ -101,7 +101,7 @@ export default class Chart extends Component {
 
   onStockClick(i) {
     const stocks = [...this.state.stockValues]
-    stocks[i].status = 'selected'
+    stocks[i].status = consts.selected
 
     if (this.state.currentlySelected === i) {
       stocks[i].status = consts.hover
