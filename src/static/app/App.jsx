@@ -256,7 +256,7 @@ export default class App extends Component {
             Open: {this.state.stockHover.open},
             Close: {this.state.stockHover.close},
             Min: {this.state.stockHover.min},
-            Max: {this.state.stockHover.max},
+            Max: {this.state.stockHover.max}
           </p> : ""}
         </div>
       </div>
