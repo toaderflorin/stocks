@@ -31,12 +31,8 @@ app.get('/api/stocks/:id', (req, res) => {
   const contents = fs.readFileSync('src/stocks.json', 'utf8')
   const obj = JSON.parse(contents)
   const company = obj.filter((c) => c.company.id === id)[0]
-  const min = Math.min(...company.stockValues.map((sv) => sv.min))
-  const max = Math.max(...company.stockValues.map((sv) => sv.max))
 
   res.send({
-    stockValues: company.stockValues,
-    min,
-    max
+    stockValues: company.stockValues
   })
 })

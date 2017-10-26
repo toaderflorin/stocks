@@ -107,10 +107,18 @@ export default class App extends Component {
   getStockValue(id) {
     axios.get(`/api/stocks/${id}`)
       .then((response) => {
+        const min = Math.min(...response.data.stockValues.map((sv) => sv.min))
+        const max = Math.max(...response.data.stockValues.map((sv) => sv.max))
+
+        const dateMin = response.data.stockValues[0].dt
+        const dateMax = response.data.stockValues[response.data.stockValues.length - 1].dt
+
         this.setState({
           stockValues: response.data.stockValues,
-          min: response.data.min,
-          max: response.data.max
+          min,
+          max,
+          dateMin,
+          dateMax
         })
       })
       .catch(function (error) {
@@ -221,6 +229,14 @@ export default class App extends Component {
 
             <text x="5" y="54" fontFamily="Verdana" fontSize="11" width="64">
               {this.state.max}
+            </text>
+
+            <text x="38" y="275" fontFamily="Verdana" fontSize="11">
+              {this.state.dateMin}
+            </text>
+
+            <text x="877" y="275" fontFamily="Verdana" fontSize="11">
+              {this.state.dateMax}
             </text>
 
           </svg>
