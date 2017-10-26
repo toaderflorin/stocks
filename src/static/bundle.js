@@ -23035,8 +23035,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
           ', Min: ',
           this.state.stockHover.min,
           ', Max: ',
-          this.state.stockHover.max,
-          ','
+          this.state.stockHover.max
         ) : ""
       )
     );

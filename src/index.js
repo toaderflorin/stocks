@@ -1,3 +1,4 @@
+const { getStockValues, getCompanies } = require('./api/stocksApi')
 const express = require('express')
 const fs = require('fs')
 const bodyParser = require('body-parser')
@@ -14,25 +15,6 @@ app.get('/', (req, res) => {
   res.send(contents)
 })
 
-app.get('/api/companies', (req, res) => {
-  const contents = fs.readFileSync('src/stocks.json', 'utf8')
-  const obj = JSON.parse(contents)
-  const companies = []
+app.get('/api/companies', getCompanies)
 
-  obj.forEach((c) => {
-    companies.push(c.company)
-  })
-
-  res.send(companies)
-})
-
-app.get('/api/stocks/:id', (req, res) => {
-  const id = req.params.id
-  const contents = fs.readFileSync('src/stocks.json', 'utf8')
-  const obj = JSON.parse(contents)
-  const company = obj.filter((c) => c.company.id === id)[0]
-
-  res.send({
-    stockValues: company.stockValues
-  })
-})
+app.get('/api/stocks/:id', getStockValues)
