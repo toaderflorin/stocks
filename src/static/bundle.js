@@ -22758,7 +22758,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     this.getStockValue = this.getStockValue.bind(this);
     this.onResetClick = this.onResetClick.bind(this);
     this.onShowAverageChanged = this.onShowAverageChanged.bind(this);
-    this.calculateProjection = this.calculateProjection.bind(this);
+    this.onShowProjectionClick = this.onShowProjectionClick.bind(this);
 
     this.state = {
       selecting: false,
@@ -22847,7 +22847,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }
   }
 
-  calculateProjection() {
+  onShowProjectionClick() {
     const delta = [];
     const stockValues = [...this.state.stockValues];
 
@@ -22871,24 +22871,42 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
       });
     }
 
+    const min = Math.min(...stockValues.map(sv => sv.min));
+    const max = Math.max(...stockValues.map(sv => sv.max));
+    const dateMin = stockValues[0].dt;
+    const dateMax = stockValues[stockValues.length - 1].dt;
+
     this.setState({
       stockValues,
+      min,
+      max,
+      dateMin,
+      dateMax,
       showProjection: true
     });
   }
 
   zoomIn(i) {
-    let start = Math.min(this.state.currentlySelected, i);
-    let end = Math.max(this.state.currentlySelected, i);
+    const start = Math.min(this.state.currentlySelected, i);
+    const end = Math.max(this.state.currentlySelected, i);
 
     const newStocks = this.state.stockValues.slice(start, end + 1);
     newStocks.forEach(stock => {
       stock.status = undefined;
     });
 
+    const min = Math.min(...newStocks.map(sv => sv.min));
+    const max = Math.max(...newStocks.map(sv => sv.max));
+    const dateMin = newStocks[0].dt;
+    const dateMax = newStocks[newStocks.length - 1].dt;
+
     const stocks = [...newStocks];
 
     this.setState({
+      min,
+      max,
+      dateMin,
+      dateMax,
       stockValues: stocks,
       currentlySelected: -1,
       showProjection: false
@@ -23054,7 +23072,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
           ' Show daily average \xA0',
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'button',
-            { onClick: this.calculateProjection, disabled: this.state.showProjection },
+            { onClick: this.onShowProjectionClick, disabled: this.state.showProjection },
             'Show Projection'
           )
         ),
