@@ -16,6 +16,10 @@ button {
   margin: 2px;
 }
 
+button:disabled {
+  background: #999;  
+}
+
 input {
   padding: 3px;
   margin: 2px;

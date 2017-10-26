@@ -22758,13 +22758,15 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     this.getStockValue = this.getStockValue.bind(this);
     this.onResetClick = this.onResetClick.bind(this);
     this.onShowAverageChanged = this.onShowAverageChanged.bind(this);
+    this.calculateProjection = this.calculateProjection.bind(this);
 
     this.state = {
       selecting: false,
       companies: [],
       currentlySelected: -1,
       stockValues: [],
-      showAverage: true
+      showAverage: true,
+      showProjection: false
     };
   }
 
@@ -22845,6 +22847,36 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }
   }
 
+  calculateProjection() {
+    const delta = [];
+    const stockValues = [...this.state.stockValues];
+
+    for (let i = 0; i < stockValues.length - 1; i++) {
+      delta.push(stockValues[i + 1].average - stockValues[i].average);
+    }
+
+    const sum = delta.reduce(function (pv, cv) {
+      return pv + cv;
+    }, 0);
+    const averageDelta = sum / delta.length;
+    const lastStockValue = stockValues[this.state.stockValues.length - 1].average;
+
+    for (let i = 1; i <= 30; i++) {
+      const value = lastStockValue + i * averageDelta;
+      stockValues.push({
+        average: value,
+        min: value,
+        max: value,
+        predicted: true
+      });
+    }
+
+    this.setState({
+      stockValues,
+      showProjection: true
+    });
+  }
+
   zoomIn(i) {
     let start = Math.min(this.state.currentlySelected, i);
     let end = Math.max(this.state.currentlySelected, i);
@@ -22858,7 +22890,8 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 
     this.setState({
       stockValues: stocks,
-      currentlySelected: -1
+      currentlySelected: -1,
+      showProjection: false
     });
   }
 
@@ -22877,7 +22910,8 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         dateMin,
         dateMax,
         currentlySelected: -1,
-        stockHover: undefined
+        stockHover: undefined,
+        showProjection: false
       });
     }).catch(function (error) {
       console.log(error);
@@ -22911,58 +22945,67 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
       const marginTop = 50.0;
       const chartHeight = 200.0;
       const chartWidth = 900.0;
-
       const columnWidth = 900 / totalValues;
       const scale = chartHeight / (this.state.max - this.state.min);
-      const bullish = sv.close > sv.open;
-      const color = bullish ? '#4f4' : 'red';
 
-      const a1 = marginLeft + columnWidth / 2 + i * columnWidth;
-      const a2 = a1;
-      const b1 = marginTop + chartHeight - (sv.min - this.state.min) * scale;
-      const b2 = marginTop + chartHeight - (sv.max - this.state.min) * scale;
+      if (!sv.predicted) {
+        const bullish = sv.close > sv.open;
+        const color = bullish ? '#4f4' : 'red';
 
-      const height = Math.abs(sv.close - sv.open) * scale;
-      const width = columnWidth - 2;
-      const x = marginLeft + (1 + i * columnWidth);
-      const y1 = marginTop + chartHeight - (sv.open - this.state.min) * scale;
-      const y2 = marginTop + chartHeight - (sv.close - this.state.min) * scale;
-      const y = Math.min(y1, y2);
+        const a1 = marginLeft + columnWidth / 2 + i * columnWidth;
+        const a2 = a1;
+        const b1 = marginTop + chartHeight - (sv.min - this.state.min) * scale;
+        const b2 = marginTop + chartHeight - (sv.max - this.state.min) * scale;
 
-      const candle = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('rect', { x: x, y: y, height: height, width: width, fill: color,
-        strokeWidth: '0', key: this.state.selectedCompany + i.toString() });
+        const height = Math.abs(sv.close - sv.open) * scale;
+        const width = columnWidth - 2;
+        const x = marginLeft + (1 + i * columnWidth);
+        const y1 = marginTop + chartHeight - (sv.open - this.state.min) * scale;
+        const y2 = marginTop + chartHeight - (sv.close - this.state.min) * scale;
+        const y = Math.min(y1, y2);
 
-      let opacity = 0.01;
+        const candle = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('rect', { x: x, y: y, height: height, width: width, fill: color,
+          strokeWidth: '0', key: this.state.selectedCompany + i.toString() });
 
-      if (sv.status === 'selected') {
-        opacity = 0.3;
-      } else if (sv.status === 'hover') {
-        opacity = 0.12;
-      }
+        let opacity = 0.01;
 
-      const line = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('line', { x1: a1, y1: b1, x2: a2, y2: b2, stroke: 'black', strokeWidth: '0.5',
-        key: 'line-' + this.state.selectedCompany + i.toString() });
+        if (sv.status === 'selected') {
+          opacity = 0.3;
+        } else if (sv.status === 'hover') {
+          opacity = 0.12;
+        }
 
-      const overlay = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('rect', { x: x, y: marginTop, height: chartHeight, width: columnWidth,
-        fill: 'gray', fillOpacity: opacity,
-        key: 'overlay-' + this.state.selectedCompany + i.toString(),
-        onMouseOver: this.onStockOver.bind(this, i),
-        onMouseOut: this.onStockOut.bind(this, i),
-        onClick: this.onStockClick.bind(this, i) });
+        const line = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('line', { x1: a1, y1: b1, x2: a2, y2: b2, stroke: 'black', strokeWidth: '0.5',
+          key: 'line-' + this.state.selectedCompany + i.toString() });
 
-      svgItems.push(candle);
-      svgItems.push(line);
-      svgItems.push(overlay);
+        const overlay = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('rect', { x: x, y: marginTop, height: chartHeight, width: columnWidth,
+          fill: 'gray', fillOpacity: opacity,
+          key: 'overlay-' + this.state.selectedCompany + i.toString(),
+          onMouseOver: this.onStockOver.bind(this, i),
+          onMouseOut: this.onStockOut.bind(this, i),
+          onClick: this.onStockClick.bind(this, i) });
 
-      if (i > 0 && this.state.showAverage) {
-        const mx1 = marginLeft + columnWidth / 2 + (i - 1) * columnWidth;
-        const my1 = marginTop + chartHeight - (this.state.stockValues[i - 1].average - this.state.min) * scale;
-        const mx2 = marginLeft + columnWidth / 2 + i * columnWidth;
-        const my2 = marginTop + chartHeight - (sv.average - this.state.min) * scale;
-        const medianLine = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('line', { x1: mx1, y1: my1, x2: mx2, y2: my2, stroke: 'black', strokeWidth: '3',
-          key: 'average-' + this.state.selectedCompany + i.toString() });
+        svgItems.push(candle);
+        svgItems.push(line);
+        svgItems.push(overlay);
 
-        svgItems.push(medianLine);
+        if (i > 0 && this.state.showAverage) {
+          const mx1 = marginLeft + columnWidth / 2 + (i - 1) * columnWidth;
+          const my1 = marginTop + chartHeight - (this.state.stockValues[i - 1].average - this.state.min) * scale;
+          const mx2 = marginLeft + columnWidth / 2 + i * columnWidth;
+          const my2 = marginTop + chartHeight - (sv.average - this.state.min) * scale;
+          const medianLine = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('line', { x1: mx1, y1: my1, x2: mx2, y2: my2, stroke: 'black', strokeWidth: '3',
+            key: 'average-' + this.state.selectedCompany + i.toString() });
+
+          svgItems.push(medianLine);
+        }
+      } else {
+        const x = marginLeft + columnWidth / 2 + i * columnWidth;
+        const y = marginTop + chartHeight - (sv.average - this.state.min) * scale;
+        const circle = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('circle', { cx: x, cy: y, r: '2', stroke: 'gray', strokeWidth: '0.5',
+          key: 'proj-' + this.state.selectedCompany + i.toString() });
+
+        svgItems.push(circle);
       }
 
       i++;
@@ -23008,7 +23051,12 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
           ),
           '\xA0',
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'checkbox', checked: this.state.showAverage, onChange: this.onShowAverageChanged }),
-          ' Show daily average'
+          ' Show daily average \xA0',
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'button',
+            { onClick: this.calculateProjection, disabled: this.state.showProjection },
+            'Show Projection'
+          )
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'svg',
