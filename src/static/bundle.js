@@ -23048,8 +23048,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
           fill: 'gray', fillOpacity: '0.01',
           key: 'overlay-' + this.state.selectedCompany + i.toString(),
           onMouseOver: this.onPredictionOver.bind(this, i),
-          onMouseOut: this.onPredictionOut.bind(this, i),
-          onClick: this.onStockClick.bind(this, i) });
+          onMouseOut: this.onPredictionOut.bind(this, i) });
 
         svgItems.push(overlay);
       }

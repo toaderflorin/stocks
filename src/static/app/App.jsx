@@ -297,8 +297,7 @@ export default class App extends Component {
           fill="gray" fillOpacity="0.01"
           key={'overlay-' + this.state.selectedCompany + i.toString()}
           onMouseOver={this.onPredictionOver.bind(this, i)}
-          onMouseOut={this.onPredictionOut.bind(this, i)}
-          onClick={this.onStockClick.bind(this, i)}>
+          onMouseOut={this.onPredictionOut.bind(this, i)}>
         </rect>
 
         svgItems.push(overlay)
