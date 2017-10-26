@@ -22766,7 +22766,8 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
       currentlySelected: -1,
       stockValues: [],
       showAverage: true,
-      showProjection: false
+      showProjection: false,
+      prediction: ''
     };
   }
 
@@ -22825,6 +22826,21 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     }
   }
 
+  onPredictionOver(i) {
+    const stocks = [...this.state.stockValues];
+    const stock = stocks[i];
+
+    this.setState({
+      prediction: `Predicted value is ${stock.average}.`
+    });
+  }
+
+  onPredictionOut(i) {
+    this.setState({
+      prediction: ''
+    });
+  }
+
   onStockClick(i) {
     const stocks = [...this.state.stockValues];
     stocks[i].status = 'selected';
@@ -22862,7 +22878,10 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     const lastStockValue = stockValues[this.state.stockValues.length - 1].average;
 
     for (let i = 1; i <= 30; i++) {
-      const value = lastStockValue + i * averageDelta;
+
+      // we cannot have more than two decimal places in prices
+
+      const value = parseFloat((lastStockValue + i * averageDelta).toFixed(2));
       stockValues.push({
         average: value,
         min: value,
@@ -23024,6 +23043,15 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
           key: 'proj-' + this.state.selectedCompany + i.toString() });
 
         svgItems.push(circle);
+
+        const overlay = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('rect', { x: x, y: marginTop, height: chartHeight, width: columnWidth,
+          fill: 'gray', fillOpacity: '0.01',
+          key: 'overlay-' + this.state.selectedCompany + i.toString(),
+          onMouseOver: this.onPredictionOver.bind(this, i),
+          onMouseOut: this.onPredictionOut.bind(this, i),
+          onClick: this.onStockClick.bind(this, i) });
+
+        svgItems.push(overlay);
       }
 
       i++;
@@ -23124,7 +23152,12 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
           this.state.stockHover.min,
           ', Max: ',
           this.state.stockHover.max
-        ) : ""
+        ) : "",
+        this.state.prediction != '' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'p',
+          null,
+          this.state.prediction
+        ) : ''
       )
     );
   }
