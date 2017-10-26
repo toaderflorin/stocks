@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import Candle from './Candle'
+import Grid from './Grid'
 const axios = require('axios')
 
 export default class Chart extends Component {
@@ -278,30 +279,8 @@ export default class Chart extends Component {
         </p>
 
         <svg className="graph" width="960" height="300" viewBox="0 0 960 300">
-
           {svgItems}
-
-          <line x1="40" y1="251" x2="940" y2="251" stroke="black" strokeWidth="0.5"/>
-          <line x1="940" y1="251" x2="940" y2="258" stroke="black" strokeWidth="0.5"/>
-          <line x1 ="40" y1="251" x2="40" y2="30" stroke="black" strokeWidth="0.5"/>
-          <line x1 ="33" y1="50" x2="40" y2="50" stroke="black" strokeWidth="0.5"/>
-
-          <text x="5" y="255" fontFamily="Verdana" fontSize="11">
-            {min}
-          </text>
-
-          <text x="5" y="54" fontFamily="Verdana" fontSize="11" width="64">
-            {max}
-          </text>
-
-          <text x="38" y="275" fontFamily="Verdana" fontSize="11">
-            {dateMin}
-          </text>
-
-          <text x="882" y="275" fontFamily="Verdana" fontSize="11">
-            {dateMax}
-          </text>
-
+          <Grid min={min} max={max} dateMin={dateMin} dateMax={dateMax}/>
         </svg>
 
         {this.state.stockHover ? <p>
