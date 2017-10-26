@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import consts from './consts'
 
 export default class Candle extends Component {
   constructor(props) {
@@ -6,11 +7,6 @@ export default class Candle extends Component {
   }
 
   render() {
-    const marginLeft = 40.0
-    const marginTop = 50.0
-    const chartHeight = 200.0
-    const chartWidth = 900.0
-
     const min = this.props.min
     const max = this.props.max
     const scale = this.props.scale
@@ -22,16 +18,16 @@ export default class Candle extends Component {
     const bullish = this.props.stock.close > this.props.stock.open
     const color = bullish ? '#4f4' : 'red'
 
-    const a1 = marginLeft + columnWidth / 2 + i * columnWidth
+    const a1 = consts.marginLeft + columnWidth / 2 + i * columnWidth
     const a2 = a1
-    const b1 = marginTop + chartHeight - (this.props.stock.min - min) * scale
-    const b2 = marginTop + chartHeight - (this.props.stock.max - min) * scale
+    const b1 = consts.marginTop + consts.chartHeight - (this.props.stock.min - min) * scale
+    const b2 = consts.marginTop + consts.chartHeight - (this.props.stock.max - min) * scale
 
     const height =  Math.abs(this.props.stock.close - this.props.stock.open) * scale
     const width = columnWidth - 2
-    const x = marginLeft + (1 + i * columnWidth)
-    const y1 = marginTop + chartHeight - (this.props.stock.open - min) * scale
-    const y2 = marginTop + chartHeight - (this.props.stock.close - min) * scale
+    const x = consts.marginLeft + (1 + i * columnWidth)
+    const y1 = consts.marginTop + consts.chartHeight - (this.props.stock.open - min) * scale
+    const y2 = consts.marginTop + consts.chartHeight - (this.props.stock.close - min) * scale
     const y = Math.min(y1, y2)
 
     const candle = <rect x={x} y={y} height={height} width={width} fill={color}
@@ -48,7 +44,7 @@ export default class Candle extends Component {
     const line = <line x1={a1} y1={b1} x2={a2} y2={b2} stroke="black" strokeWidth="0.5"
       key={`line-${i}`}/>
 
-    const overlay = <rect x={x} y={marginTop} height={chartHeight} width={columnWidth}
+    const overlay = <rect x={x} y={consts.marginTop} height={consts.chartHeight} width={columnWidth}
       fill="gray" fillOpacity={opacity}
       onMouseOver={this.props.onStockOver}
       onMouseOut={this.props.onStockOut}

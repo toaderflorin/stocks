@@ -3,6 +3,7 @@ import Candle from './Candle'
 import Grid from './Grid'
 import Line from './Line'
 import Footer from './Footer'
+import consts from './consts'
 const axios = require('axios')
 
 export default class Chart extends Component {
@@ -58,8 +59,8 @@ export default class Chart extends Component {
       stockHover: stock
     })
 
-    if (!status || status !== 'selected') {
-      stock.status = 'hover'
+    if (!status || status !== consts.selected) {
+      stock.status = consts.hover
       this.setState({
         stockValues: stocks
       })
@@ -75,7 +76,7 @@ export default class Chart extends Component {
       stockHover: undefined
     })
 
-    if (!status || status !== 'selected') {
+    if (!status || status !== consts.selected) {
       stock.status = undefined
       this.setState({
         stockValues: stocks
@@ -103,7 +104,7 @@ export default class Chart extends Component {
     stocks[i].status = 'selected'
 
     if (this.state.currentlySelected === i) {
-      stocks[i].status = 'hover'
+      stocks[i].status = consts.hover
       this.setState({
         stockValues: stocks,
         currentlySelected: -1
@@ -219,12 +220,8 @@ export default class Chart extends Component {
     let i = 0
 
     for (let sv of stockValues) {
-      const marginLeft = 40.0
-      const marginTop = 50.0
-      const chartHeight = 200.0
-      const chartWidth = 900.0
-      const columnWidth =  900 / totalValues
-      const scale = chartHeight / (max - min)
+      const columnWidth =  consts.chartWidth / totalValues
+      const scale = consts.chartHeight / (max - min)
 
       if (!sv.predicted) {
         svgItems.push(<Candle stock={sv} i={i} min={min} max={max} i={i} scale={scale} columnWidth={columnWidth}
@@ -239,14 +236,14 @@ export default class Chart extends Component {
             min={min} columnWidth={columnWidth} key={`average-${i}`}/>)
         }
       } else {
-        const x = marginLeft + columnWidth / 2 + i * columnWidth
-        const y = marginTop + chartHeight - (sv.average - min) * scale
+        const x = consts.marginLeft + columnWidth / 2 + i * columnWidth
+        const y = consts.marginTop + consts.chartHeight - (sv.average - min) * scale
         const circle = <circle cx={x} cy={y} r="2" stroke="gray" strokeWidth="0.5"
           key={`proj-${i}`}/>
 
         svgItems.push(circle)
 
-        const overlay = <rect x={x} y={marginTop} height={chartHeight} width={columnWidth}
+        const overlay = <rect x={x} y={consts.marginTop} height={consts.chartHeight} width={columnWidth}
           fill="gray" fillOpacity="0.01"
           key={`overlay-${i}`}
           onMouseOver={this.onPredictionOver.bind(this, i)}
