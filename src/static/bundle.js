@@ -22877,8 +22877,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     const averageDelta = sum / delta.length;
     const lastStockValue = stockValues[this.state.stockValues.length - 1].average;
 
-    for (let i = 1; i <= 30; i++) {
-
+    for (let i = 1; i <= 20; i++) {
       // we cannot have more than two decimal places in prices
 
       const value = parseFloat((lastStockValue + i * averageDelta).toFixed(2));

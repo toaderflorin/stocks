@@ -127,8 +127,7 @@ export default class App extends Component {
     const averageDelta = sum  / delta.length
     const lastStockValue = stockValues[this.state.stockValues.length - 1].average
 
-    for (let i = 1; i <= 30; i++) {
-
+    for (let i = 1; i <= 20; i++) {
       // we cannot have more than two decimal places in prices
 
       const value = parseFloat((lastStockValue + i * averageDelta).toFixed(2))
