@@ -22792,6 +22792,10 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     const stock = stocks[i];
     const status = stock.status;
 
+    this.setState({
+      stockHover: stock
+    });
+
     if (!status || status !== 'selected') {
       stock.status = 'hover';
       this.setState({
@@ -22804,6 +22808,10 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     const stocks = [...this.state.stockValues];
     const stock = stocks[i];
     const status = stock.status;
+
+    this.setState({
+      stockHover: undefined
+    });
 
     if (!status || status !== 'selected') {
       stock.status = undefined;
@@ -23012,7 +23020,22 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             { x: '877', y: '275', fontFamily: 'Verdana', fontSize: '11' },
             this.state.dateMax
           )
-        )
+        ),
+        this.state.stockHover ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'p',
+          null,
+          'Date: ',
+          this.state.stockHover.dt,
+          ', Open: ',
+          this.state.stockHover.open,
+          ', Close: ',
+          this.state.stockHover.close,
+          ', Min: ',
+          this.state.stockHover.min,
+          ', Max: ',
+          this.state.stockHover.max,
+          ','
+        ) : ""
       )
     );
   }

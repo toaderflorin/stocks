@@ -44,6 +44,10 @@ export default class App extends Component {
     const stock = stocks[i]
     const status = stock.status
 
+    this.setState({
+      stockHover: stock
+    })
+
     if (!status || status !== 'selected') {
       stock.status = 'hover'
       this.setState({
@@ -56,6 +60,10 @@ export default class App extends Component {
     const stocks = [...this.state.stockValues]
     const stock = stocks[i]
     const status = stock.status
+
+    this.setState({
+      stockHover: undefined
+    })
 
     if (!status || status !== 'selected') {
       stock.status = undefined
@@ -240,6 +248,14 @@ export default class App extends Component {
             </text>
 
           </svg>
+
+          {this.state.stockHover ? <p>
+            Date: {this.state.stockHover.dt},
+            Open: {this.state.stockHover.open},
+            Close: {this.state.stockHover.close},
+            Min: {this.state.stockHover.min},
+            Max: {this.state.stockHover.max},
+          </p> : ""}
         </div>
       </div>
     )
