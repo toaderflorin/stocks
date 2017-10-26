@@ -156,25 +156,19 @@ export default class App extends Component {
 
       const columnWidth =  900 / totalValues
       const scale = chartHeight / (this.state.max - this.state.min)
-
       const bullish = sv.close > sv.open
       const color = bullish ? '#4f4' : 'red'
 
-      const min = (sv.min - this.state.min) * scale
-      const max = (sv.max - this.state.min) * scale
       const a1 = marginLeft + columnWidth / 2 + i * columnWidth
       const a2 = a1
-      const b1 = marginTop + chartHeight - min
-      const b2 = marginTop + chartHeight - max
+      const b1 = marginTop + chartHeight - (sv.min - this.state.min) * scale
+      const b2 = marginTop + chartHeight - (sv.max - this.state.min) * scale
 
       const height =  Math.abs(sv.close - sv.open) * scale
       const width = columnWidth - 2
       const x = marginLeft + (1 + i * columnWidth)
-
-      const open = (sv.open - this.state.min) * scale
-      const close = (sv.close - this.state.min) * scale
-      const y1 = marginTop + chartHeight - open
-      const y2 = marginTop + chartHeight - close
+      const y1 = marginTop + chartHeight - (sv.open - this.state.min) * scale
+      const y2 = marginTop + chartHeight - (sv.close - this.state.min) * scale
       const y = Math.min(y1, y2)
 
       const candle = <rect x={x} y={y} height={height} width={width} fill={color}
@@ -202,6 +196,18 @@ export default class App extends Component {
       svgItems.push(candle)
       svgItems.push(line)
       svgItems.push(overlay)
+
+      if (i > 0) {
+        const mx1 = marginLeft + columnWidth / 2 + (i - 1) * columnWidth
+        const my1 = marginTop + chartHeight - (this.state.stockValues[i - 1].average - this.state.min) * scale
+
+        const mx2 = marginLeft + columnWidth / 2 + i * columnWidth
+        const my2 = marginTop + chartHeight - (sv.average - this.state.min) * scale
+
+        const medianLine = <line x1={mx1} y1={my1} x2={mx2} y2={my2} stroke="black" strokeWidth="3"/>
+
+        svgItems.push(medianLine)
+      }
 
       i++
     }
@@ -253,6 +259,7 @@ export default class App extends Component {
 
           {this.state.stockHover ? <p>
             Date: {this.state.stockHover.dt},
+            Average: <b>{this.state.stockHover.average}</b>, 
             Open: {this.state.stockHover.open},
             Close: {this.state.stockHover.close},
             Min: {this.state.stockHover.min},
