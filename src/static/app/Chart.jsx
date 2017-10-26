@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import Candle from './Candle'
 import Grid from './Grid'
+import Line from './Line'
 import Footer from './Footer'
 const axios = require('axios')
 
@@ -224,9 +225,7 @@ export default class Chart extends Component {
       const scale = chartHeight / (max - min)
 
       if (!sv.predicted) {
-        svgItems.push(<Candle stock={sv} i={i} min={min} max={max}
-          i={i} scale={scale}
-          columnWidth={columnWidth}
+        svgItems.push(<Candle stock={sv} i={i} min={min} max={max} i={i} scale={scale} columnWidth={columnWidth}
           onStockOver={this.onStockOver.bind(this, i)}
           onStockOut={this.onStockOut.bind(this, i)}
           onStockClick={this.onStockClick.bind(this, i)}
@@ -234,14 +233,8 @@ export default class Chart extends Component {
         />)
 
         if (i > 0 && this.state.showAverage) {
-          const mx1 = marginLeft + columnWidth / 2 + (i - 1) * columnWidth
-          const my1 = marginTop + chartHeight - (this.state.stockValues[i - 1].average - min) * scale
-          const mx2 = marginLeft + columnWidth / 2 + i * columnWidth
-          const my2 = marginTop + chartHeight - (sv.average - min) * scale
-          const medianLine = <line x1={mx1} y1={my1} x2={mx2} y2={my2} stroke="black" strokeWidth="3"
-            key={`average-${i}`}/>
-
-          svgItems.push(medianLine)
+          svgItems.push(<Line i={i} scale={scale} sv1={stockValues[i - 1]} sv2={stockValues[i]}
+            min={min} columnWidth={columnWidth} key={`average-${i}`}/>)
         }
       } else {
         const x = marginLeft + columnWidth / 2 + i * columnWidth
