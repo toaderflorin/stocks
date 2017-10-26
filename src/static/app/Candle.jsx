@@ -35,7 +35,7 @@ export default class Candle extends Component {
     const y = Math.min(y1, y2)
 
     const candle = <rect x={x} y={y} height={height} width={width} fill={color}
-      strokeWidth="0" key={this.props.selectedCompany + i.toString()}/>
+      strokeWidth="0" key={`rect-${i}`}/>
 
     let opacity = 0.01
 
@@ -46,14 +46,14 @@ export default class Candle extends Component {
     }
 
     const line = <line x1={a1} y1={b1} x2={a2} y2={b2} stroke="black" strokeWidth="0.5"
-      key={'line-' + this.props.selectedCompany + i.toString()}/>
+      key={`line-${i}`}/>
 
     const overlay = <rect x={x} y={marginTop} height={chartHeight} width={columnWidth}
       fill="gray" fillOpacity={opacity}
       onMouseOver={this.props.onStockOver}
       onMouseOut={this.props.onStockOut}
       onClick={this.props.onStockClick}
-      key={'overlay-' + this.props.selectedCompany + i.toString()}>
+      key={`overlay-candle-${i}`}>
     </rect>
 
     svgItems.push(candle)

@@ -225,13 +225,12 @@ export default class Chart extends Component {
 
       if (!sv.predicted) {
         svgItems.push(<Candle stock={sv} i={i} min={min} max={max}
-          selectedCompany={this.state.selectedCompany}
           i={i} scale={scale}
           columnWidth={columnWidth}
           onStockOver={this.onStockOver.bind(this, i)}
           onStockOut={this.onStockOut.bind(this, i)}
           onStockClick={this.onStockClick.bind(this, i)}
-          key={'candle-' + this.state.selectedCompany + i.toString()}
+          key={`candle-${i}`}
         />)
 
         if (i > 0 && this.state.showAverage) {
@@ -240,7 +239,7 @@ export default class Chart extends Component {
           const mx2 = marginLeft + columnWidth / 2 + i * columnWidth
           const my2 = marginTop + chartHeight - (sv.average - min) * scale
           const medianLine = <line x1={mx1} y1={my1} x2={mx2} y2={my2} stroke="black" strokeWidth="3"
-            key={'average-' + this.state.selectedCompany + i.toString()}/>
+            key={`average-${i}`}/>
 
           svgItems.push(medianLine)
         }
@@ -248,13 +247,13 @@ export default class Chart extends Component {
         const x = marginLeft + columnWidth / 2 + i * columnWidth
         const y = marginTop + chartHeight - (sv.average - min) * scale
         const circle = <circle cx={x} cy={y} r="2" stroke="gray" strokeWidth="0.5"
-          key={'proj-' + this.state.selectedCompany + i.toString()}/>
+          key={`proj-${i}`}/>
 
         svgItems.push(circle)
 
         const overlay = <rect x={x} y={marginTop} height={chartHeight} width={columnWidth}
           fill="gray" fillOpacity="0.01"
-          key={'overlay-' + this.state.selectedCompany + i.toString()}
+          key={`overlay-${i}`}
           onMouseOver={this.onPredictionOver.bind(this, i)}
           onMouseOut={this.onPredictionOut.bind(this, i)}>
         </rect>

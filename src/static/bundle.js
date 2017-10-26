@@ -23042,13 +23042,12 @@ class Chart extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 
       if (!sv.predicted) {
         svgItems.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Candle__["a" /* default */], { stock: sv, i: i, min: min, max: max,
-          selectedCompany: this.state.selectedCompany,
           i: i, scale: scale,
           columnWidth: columnWidth,
           onStockOver: this.onStockOver.bind(this, i),
           onStockOut: this.onStockOut.bind(this, i),
           onStockClick: this.onStockClick.bind(this, i),
-          key: 'candle-' + this.state.selectedCompany + i.toString()
+          key: `candle-${i}`
         }));
 
         if (i > 0 && this.state.showAverage) {
@@ -23057,7 +23056,7 @@ class Chart extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
           const mx2 = marginLeft + columnWidth / 2 + i * columnWidth;
           const my2 = marginTop + chartHeight - (sv.average - min) * scale;
           const medianLine = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('line', { x1: mx1, y1: my1, x2: mx2, y2: my2, stroke: 'black', strokeWidth: '3',
-            key: 'average-' + this.state.selectedCompany + i.toString() });
+            key: `average-${i}` });
 
           svgItems.push(medianLine);
         }
@@ -23065,13 +23064,13 @@ class Chart extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         const x = marginLeft + columnWidth / 2 + i * columnWidth;
         const y = marginTop + chartHeight - (sv.average - min) * scale;
         const circle = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('circle', { cx: x, cy: y, r: '2', stroke: 'gray', strokeWidth: '0.5',
-          key: 'proj-' + this.state.selectedCompany + i.toString() });
+          key: `proj-${i}` });
 
         svgItems.push(circle);
 
         const overlay = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('rect', { x: x, y: marginTop, height: chartHeight, width: columnWidth,
           fill: 'gray', fillOpacity: '0.01',
-          key: 'overlay-' + this.state.selectedCompany + i.toString(),
+          key: `overlay-${i}`,
           onMouseOver: this.onPredictionOver.bind(this, i),
           onMouseOut: this.onPredictionOut.bind(this, i) });
 
@@ -23164,7 +23163,7 @@ class Candle extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         const y = Math.min(y1, y2);
 
         const candle = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('rect', { x: x, y: y, height: height, width: width, fill: color,
-            strokeWidth: '0', key: this.props.selectedCompany + i.toString() });
+            strokeWidth: '0', key: `rect-${i}` });
 
         let opacity = 0.01;
 
@@ -23175,14 +23174,14 @@ class Candle extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         }
 
         const line = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('line', { x1: a1, y1: b1, x2: a2, y2: b2, stroke: 'black', strokeWidth: '0.5',
-            key: 'line-' + this.props.selectedCompany + i.toString() });
+            key: `line-${i}` });
 
         const overlay = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('rect', { x: x, y: marginTop, height: chartHeight, width: columnWidth,
             fill: 'gray', fillOpacity: opacity,
             onMouseOver: this.props.onStockOver,
             onMouseOut: this.props.onStockOut,
             onClick: this.props.onStockClick,
-            key: 'overlay-' + this.props.selectedCompany + i.toString() });
+            key: `overlay-candle-${i}` });
 
         svgItems.push(candle);
         svgItems.push(line);
