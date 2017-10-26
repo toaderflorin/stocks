@@ -22831,7 +22831,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     const stock = stocks[i];
 
     this.setState({
-      prediction: `Predicted value is ${stock.average}.`
+      prediction: `Predicted value for ${stock.dt} is ${stock.average}.`
     });
   }
 
@@ -22875,18 +22875,29 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
       return pv + cv;
     }, 0);
     const averageDelta = sum / delta.length;
-    const lastStockValue = stockValues[this.state.stockValues.length - 1].average;
+    const lastStockValue = stockValues[stockValues.length - 1].average;
+    const lastDate = stockValues[stockValues.length - 1].dt;
 
-    for (let i = 1; i <= 20; i++) {
-      // we cannot have more than two decimal places in prices
+    let i = 0;
+    let total = 0;
 
+    while (total < 21) {
+      const date = new Date(lastDate);
       const value = parseFloat((lastStockValue + i * averageDelta).toFixed(2));
-      stockValues.push({
-        average: value,
-        min: value,
-        max: value,
-        predicted: true
-      });
+      const dt = new Date(date.setDate(date.getDate() + i));
+      console.log(dt);
+      // we are only adding weekdays
+      if (dt.getDay() >= 1 && dt.getDay() <= 5) {
+        stockValues.push({
+          average: value,
+          min: value,
+          max: value,
+          predicted: true,
+          dt: `${dt.getFullYear()}-${dt.getMonth()}-${dt.getDate()}`
+        });
+        total++;
+      }
+      i++;
     }
 
     const min = Math.min(...stockValues.map(sv => sv.min));
@@ -22935,7 +22946,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     axios.get(`/api/stocks/${id}`).then(response => {
       const min = Math.min(...response.data.stockValues.map(sv => sv.min));
       const max = Math.max(...response.data.stockValues.map(sv => sv.max));
-
       const dateMin = response.data.stockValues[0].dt;
       const dateMax = response.data.stockValues[response.data.stockValues.length - 1].dt;
 
@@ -23127,7 +23137,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'text',
-            { x: '877', y: '275', fontFamily: 'Verdana', fontSize: '11' },
+            { x: '882', y: '275', fontFamily: 'Verdana', fontSize: '11' },
             this.state.dateMax
           )
         ),
