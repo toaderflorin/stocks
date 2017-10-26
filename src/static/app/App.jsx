@@ -7,12 +7,14 @@ export default class App extends Component {
     this.onCompanyChanged = this.onCompanyChanged.bind(this)
     this.getStockValue = this.getStockValue.bind(this)
     this.onResetClick = this.onResetClick.bind(this)
+    this.onShowAverageChanged = this.onShowAverageChanged.bind(this)
 
     this.state = {
       selecting: false,
       companies: [],
       currentlySelected: -1,
-      stockValues: []
+      stockValues: [],
+      showAverage: true
     }
   }
 
@@ -140,6 +142,12 @@ export default class App extends Component {
     this.getStockValue(this.state.selectedCompany)
   }
 
+  onShowAverageChanged() {
+    this.setState ({
+      showAverage: !this.state.showAverage
+    })
+  }
+
   render() {
     const companies = this.state.companies.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)
     const svgItems = []
@@ -197,14 +205,13 @@ export default class App extends Component {
       svgItems.push(line)
       svgItems.push(overlay)
 
-      if (i > 0) {
+      if (i > 0 && this.state.showAverage) {
         const mx1 = marginLeft + columnWidth / 2 + (i - 1) * columnWidth
         const my1 = marginTop + chartHeight - (this.state.stockValues[i - 1].average - this.state.min) * scale
-
         const mx2 = marginLeft + columnWidth / 2 + i * columnWidth
         const my2 = marginTop + chartHeight - (sv.average - this.state.min) * scale
-
-        const medianLine = <line x1={mx1} y1={my1} x2={mx2} y2={my2} stroke="black" strokeWidth="3"/>
+        const medianLine = <line x1={mx1} y1={my1} x2={mx2} y2={my2} stroke="black" strokeWidth="3"
+          key={'average-' + this.state.selectedCompany + i.toString()}/>
 
         svgItems.push(medianLine)
       }
@@ -222,12 +229,16 @@ export default class App extends Component {
         <div className="content">
           <p>Hover over a candle to see details. Select two candles to zoom in to a time span, click Reset to reset the zoom level.</p>
           <p>
-            Company:
+            Company
             <select value={this.state.selectedCompany} onChange={this.onCompanyChanged} >
               {companies}
             </select>
 
             <button onClick={this.onResetClick}>Reset</button>
+
+            &nbsp;
+
+            <input type="checkbox" checked={this.state.showAverage} onChange={this.onShowAverageChanged}/> Show daily average
           </p>
 
           <svg className="graph" width="960" height="300" viewBox="0 0 960 300">
@@ -259,7 +270,7 @@ export default class App extends Component {
 
           {this.state.stockHover ? <p>
             Date: {this.state.stockHover.dt},
-            Average: <b>{this.state.stockHover.average}</b>, 
+            Average: <b>{this.state.stockHover.average}</b>,
             Open: {this.state.stockHover.open},
             Close: {this.state.stockHover.close},
             Min: {this.state.stockHover.min},

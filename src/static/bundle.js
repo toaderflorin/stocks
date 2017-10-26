@@ -22757,12 +22757,14 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     this.onCompanyChanged = this.onCompanyChanged.bind(this);
     this.getStockValue = this.getStockValue.bind(this);
     this.onResetClick = this.onResetClick.bind(this);
+    this.onShowAverageChanged = this.onShowAverageChanged.bind(this);
 
     this.state = {
       selecting: false,
       companies: [],
       currentlySelected: -1,
-      stockValues: []
+      stockValues: [],
+      showAverage: true
     };
   }
 
@@ -22886,6 +22888,12 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     this.getStockValue(this.state.selectedCompany);
   }
 
+  onShowAverageChanged() {
+    this.setState({
+      showAverage: !this.state.showAverage
+    });
+  }
+
   render() {
     const companies = this.state.companies.map(c => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'option',
@@ -22946,14 +22954,13 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
       svgItems.push(line);
       svgItems.push(overlay);
 
-      if (i > 0) {
+      if (i > 0 && this.state.showAverage) {
         const mx1 = marginLeft + columnWidth / 2 + (i - 1) * columnWidth;
         const my1 = marginTop + chartHeight - (this.state.stockValues[i - 1].average - this.state.min) * scale;
-
         const mx2 = marginLeft + columnWidth / 2 + i * columnWidth;
         const my2 = marginTop + chartHeight - (sv.average - this.state.min) * scale;
-
-        const medianLine = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('line', { x1: mx1, y1: my1, x2: mx2, y2: my2, stroke: 'black', strokeWidth: '3' });
+        const medianLine = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('line', { x1: mx1, y1: my1, x2: mx2, y2: my2, stroke: 'black', strokeWidth: '3',
+          key: 'average-' + this.state.selectedCompany + i.toString() });
 
         svgItems.push(medianLine);
       }
@@ -22988,7 +22995,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'p',
           null,
-          'Company:',
+          'Company',
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'select',
             { value: this.state.selectedCompany, onChange: this.onCompanyChanged },
@@ -22998,7 +23005,10 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             'button',
             { onClick: this.onResetClick },
             'Reset'
-          )
+          ),
+          '\xA0',
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'checkbox', checked: this.state.showAverage, onChange: this.onShowAverageChanged }),
+          ' Show daily average'
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'svg',
