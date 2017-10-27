@@ -24,3 +24,6 @@ Future value prediction for stock: 3h
 
 Refactoring and cleanup: 4h
 
+## Observations
+
+The JavaScript code uses 2 white space chars for tab and leaves out trailing semicolons, thus following the standard Node.js guidlines.
