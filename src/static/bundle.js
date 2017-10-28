@@ -22930,7 +22930,7 @@ class Chart extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 
   onStockClick(i) {
     const stocks = [...this.state.stockValues];
-    stocks[i].status = 'selected';
+    stocks[i].status = __WEBPACK_IMPORTED_MODULE_5__consts__["a" /* default */].selected;
 
     if (this.state.currentlySelected === i) {
       stocks[i].status = __WEBPACK_IMPORTED_MODULE_5__consts__["a" /* default */].hover;

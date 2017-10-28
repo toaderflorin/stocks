@@ -20,6 +20,7 @@ export default class App extends Component {
             Hover over a candle to see details. Select two candles to zoom in to a time span,
             click Reset to reset the zoom level. The application shows values only for weekdays (Monday to Friday),
             while Show Projection creates a prediction graph with the estimated values of the next 21 workdays.
+            The projection is based on the currently selected dataset.
           </p>
           <Chart />
         </div>
