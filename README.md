@@ -26,4 +26,4 @@ Refactoring and cleanup: 4h
 
 ## Observations
 
-The JavaScript code uses 2 white space chars for tab and leaves out trailing semicolons, thus following the standard Node.js guidlines Stock value data has been manually created and it's probably not very realistic. "Average" represents the average traded value for the stock during a particular day, it is not computed from open / close / min / max values.
+The Javascript code uses 2 white space chars for tab and leaves out trailing semicolons, thus following the standard Node.js guidlines. Stock value data has been manually created and it's probably not very realistic. "Average" represents the average traded value for the stock during a particular day, it is not computed from open / close / min / max values.
