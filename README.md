@@ -1,14 +1,3 @@
-# Stocks Demo
-Make sure you have Node 8.8.1 (Current) installed. Application can be run by typing:
-
-*npm install* (to install packages needed by the app)
-
-followed by:
-
-*npm start*
-
-at the command prompt in the folder containing the source code.
-
 ## Time Breakdown
 A total of aproximately 15 hours were needed to develop the demo application.
 
